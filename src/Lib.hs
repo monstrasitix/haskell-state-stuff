@@ -20,14 +20,26 @@ import Text.Blaze
 import Text.Blaze.Html
 import qualified Text.Blaze.Html5 as H
 
+
+data Gender = Male | Female | Other
+  deriving (Show, Generic)
+
 data User = User
   { userId :: Int
   , userFirstName :: T.Text
   , userLastName :: T.Text
   , userDateOfBirth :: Day
+  , userGender :: Gender
   }
   deriving (Show, Generic)
 
+instance ToJSON Gender where
+  toJSON gender = case gender of
+      Male    -> "male"
+      Female  -> "female"
+      Other   -> "other"
+
+instance FromJSON Gender
 
 instance ToJSON User where
   toJSON :: User -> Value
@@ -44,6 +56,7 @@ instance ToJSON User where
     <> "firstName"   .= userFirstName user
     <> "lastName"    .= userLastName user
     <> "dateOfBirth" .= userDateOfBirth user
+    <> "gender"      .= userGender user
     )
 
 instance FromJSON User where
@@ -53,12 +66,14 @@ instance FromJSON User where
       <*> v .: "firstName"
       <*> v .: "lastName"
       <*> v .: "dateOfBirth"
+      <*> v .: "gender"
 
 instance ToMarkup User where
   toMarkup user =
     H.tr $ do
       H.td (toHtml $ userFirstName user)
       H.td (toHtml $ userLastName user)
+      H.td (toHtml $ show $ userGender user)
 
 instance ToMarkup (Maybe User) where
   toMarkup (Just user) = toMarkup user
@@ -69,6 +84,7 @@ instance ToMarkup [User] where
     H.tr $ do
       H.th "First name"
       H.th "Last name"
+      H.th "Gender"
     foldMap toMarkup xs
 
 
@@ -81,8 +97,8 @@ type API = "users" :>
 
 users :: [User]
 users =
-    [ User 1 (T.pack "John") (T.pack "Doe") (fromGregorian 1995 9 11)
-    , User 2 (T.pack "Jane") (T.pack "Doe") (fromGregorian 1995 9 11)
+    [ User 1 (T.pack "John") (T.pack "Doe") (fromGregorian 1995 9 11) Male
+    , User 2 (T.pack "Jane") (T.pack "Doe") (fromGregorian 1995 9 11) Female
     ]
 
 
