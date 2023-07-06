@@ -1,0 +1,20 @@
+@domain=http://localhost:8080
+
+
+GET {{domain}}/users HTTP/1.1
+Accept: application/json
+
+###
+
+GET {{domain}}/users HTTP/1.1
+Accept: text/html
+
+###
+
+GET {{domain}}/users/1 HTTP/1.1
+Accept: application/json
+
+###
+
+GET {{domain}}/users/1 HTTP/1.1
+Accept: text/html
