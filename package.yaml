@@ -23,16 +23,8 @@ dependencies:
 - base >= 4.7 && < 5
 - aeson
 - servant-server
-- servant-blaze
-- blaze-html
-- blaze-markup
 - wai
 - warp
-- bytestring
-- time
-- http-media
-- text
-- random
 
 ghc-options:
 - -Wall
