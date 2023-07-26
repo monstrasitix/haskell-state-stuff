@@ -10,21 +10,8 @@ import Network.Wai.Handler.Warp
 import Servant
 
 import API
-import qualified API.User as User
-import qualified API.Product as Product
 import Database.SQLite.Simple
 import Migration
-
-type API = APIVersion "v1"
-    (
-        "users" :> User.API
-        :<|> "products" :> Product.API
-    )
-
-
-server :: Server API
-server = User.server
-    :<|> Product.server
 
 
 settings :: Settings
@@ -37,4 +24,4 @@ startApp :: IO ()
 startApp = do
     Migration.run & withConnection "./sqlite.db" 
     runSettings settings
-        $ serve (Proxy @API) server
+        $ serve (Proxy @API.API) API.server

@@ -1,5 +1,6 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE InstanceSigs #-}
 module Model.Product (Product(..)) where
 
 import Data.Aeson
@@ -16,9 +17,14 @@ data Product = Product
     deriving (Show, Generic)
 
 
-instance FromJSON Product
+instance FromJSON Product where
+  parseJSON = withObject "Product" $ \v -> Product
+    <$> v .: "id"
+    <*> v .: "name"
+
 
 instance ToJSON Product where
+  toEncoding :: Product -> Encoding
   toEncoding x = pairs
     ( "id" .= productId x
     <> "name" .= productName x
@@ -26,7 +32,14 @@ instance ToJSON Product where
 
 
 instance FromRow Product where
-  fromRow = Product <$> field <*> field
+  fromRow :: RowParser Product
+  fromRow = Product
+    <$> field
+    <*> field
+
 
 instance ToRow Product where
-  toRow (Product id_ name) = toRow (id_, name)
+  toRow x = toRow
+    ( productId x
+    , productName x
+    )

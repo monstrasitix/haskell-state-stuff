@@ -1,4 +1,4 @@
-module Migration (up, down, run) where
+module Migration (run) where
 
 import Database.SQLite.Simple
 

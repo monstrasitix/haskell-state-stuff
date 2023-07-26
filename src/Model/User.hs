@@ -16,18 +16,21 @@ data User = User
     }
     deriving Generic
 
+
 instance ToJSON User where
     toEncoding user = pairs
         ( "id" .= userId user
         <> "firstName" .= userFirstName user
         <> "lastName" .= userLastName user
         )
+
     
 instance FromJSON User where
-    parseJSON = withObject "User" $ \x -> User
-        <$> x .: "id"
-        <*> x .: "firstName"
-        <*> x .: "lastName"
+    parseJSON = withObject "User" $ \v -> User
+        <$> v .: "id"
+        <*> v .: "firstName"
+        <*> v .: "lastName"
+
 
 instance FromRow User where
   fromRow = User
@@ -35,9 +38,10 @@ instance FromRow User where
     <*> field
     <*> field
 
+
 instance ToRow User where
-  toRow (User id_ firstName lastName) = toRow
-    ( id_
-    , firstName
-    , lastName
+  toRow x = toRow
+    ( userId x
+    , userFirstName x
+    , userLastName x
     )
