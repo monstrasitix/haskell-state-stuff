@@ -28,7 +28,10 @@ library
       API.Product
       API.Root
       API.User
+      Database.Migration.Product
+      Database.Migration.User
       Lib
+      Migration
       Model.Product
       Model.User
   other-modules:
