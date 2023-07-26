@@ -25,6 +25,8 @@ dependencies:
 - servant-server
 - wai
 - warp
+- text
+- sqlite-simple
 
 ghc-options:
 - -Wall
