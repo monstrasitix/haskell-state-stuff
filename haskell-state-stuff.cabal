@@ -25,8 +25,8 @@ source-repository head
 
 library
   exposed-modules:
+      API
       API.Product
-      API.Root
       API.User
       Database.Migration.Product
       Database.Migration.User

@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 module API.Product (API, server) where
 
-import API.Root
+import API
 import Servant
 import Model.Product
 

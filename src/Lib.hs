@@ -9,7 +9,7 @@ import Data.Function
 import Network.Wai.Handler.Warp
 import Servant
 
-import API.Root
+import API
 import qualified API.User as User
 import qualified API.Product as Product
 import Database.SQLite.Simple

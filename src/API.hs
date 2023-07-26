@@ -2,7 +2,7 @@
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE KindSignatures #-}
 {-# LANGUAGE OverloadedStrings #-}
-module API.Root (APIVersion, EntityAPI, entityServer) where
+module API (APIVersion, EntityAPI, entityServer) where
 
 import GHC.TypeLits
 import Servant
