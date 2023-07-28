@@ -1,26 +1,31 @@
-{-# LANGUAGE QuasiQuotes #-}
 {-# LANGUAGE OverloadedStrings #-}
-module Database.Migration.User (up, down) where
+{-# LANGUAGE QuasiQuotes       #-}
 
-import Database.SQLite.Simple
-import Database.SQLite.Simple.QQ
+module Database.Migration.User
+  ( up
+  , down
+  ) where
 
+import           Database.SQLite.Simple
+import           Database.SQLite.Simple.QQ
 
 down :: Connection -> IO ()
 down conn = execute_ conn "DROP TABLE IF EXISTS users"
 
-
 up :: Connection -> IO ()
 up conn = do
-    execute_ conn [sql|
+  execute_
+    conn
+    [sql|
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY
             , firstName VARCHAR(255) NOT NULL
             , lastName VARCHAR(255) NOT NULL
         )
     |]
-
-    execute_ conn [sql|
+  execute_
+    conn
+    [sql|
         INSERT INTO users (id, firstName, lastName) VALUES
             (1, "John", "Doe")
             , (2, "Sally", "Murphy")
