@@ -1,10 +1,13 @@
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE QuasiQuotes #-}
+{-# LANGUAGE QuasiQuotes       #-}
 
-module Database.Migration.User (up, down) where
+module Database.Migration.User
+  ( up
+  , down
+  ) where
 
-import Database.SQLite.Simple
-import Database.SQLite.Simple.QQ
+import           Database.SQLite.Simple
+import           Database.SQLite.Simple.QQ
 
 down :: Connection -> IO ()
 down conn = execute_ conn "DROP TABLE IF EXISTS users"

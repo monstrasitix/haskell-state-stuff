@@ -1,13 +1,16 @@
-{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE DataKinds      #-}
 {-# LANGUAGE KindSignatures #-}
-{-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE TypeOperators  #-}
 
-module API (API, server) where
+module API
+  ( API
+  , server
+  ) where
 
-import qualified API.Product as Product
-import qualified API.User as User
-import GHC.TypeLits
-import Servant
+import qualified API.Product  as Product
+import qualified API.User     as User
+import           GHC.TypeLits
+import           Servant
 
 type APIVersion (s :: Symbol) rest = "api" :> s :> rest
 

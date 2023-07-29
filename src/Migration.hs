@@ -1,9 +1,11 @@
-module Migration (run) where
+module Migration
+  ( run
+  ) where
 
 import Database.SQLite.Simple
 
 import qualified Database.Migration.Product as Product
-import qualified Database.Migration.User as User
+import qualified Database.Migration.User    as User
 
 up :: Connection -> IO ()
 up conn = do
@@ -16,4 +18,6 @@ down conn = do
   User.down conn
 
 run :: Connection -> IO ()
-run conn = down conn >> up conn
+run conn =
+  down conn
+  >> up conn

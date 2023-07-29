@@ -1,14 +1,17 @@
-{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE DataKinds         #-}
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE TypeOperators     #-}
 
-module API.Product (API, server) where
+module API.Product (
+  API
+  , server
+  ) where
 
-import Control.Monad.IO.Class
-import Data.Maybe
-import Database.SQLite.Simple
-import Model.Product
-import Servant
+import           Control.Monad.IO.Class
+import           Data.Maybe
+import           Database.SQLite.Simple
+import           Model.Product
+import           Servant
 
 type API
   = QueryParam "limit" Int :> QueryParam "offset" Int :> Get '[JSON] [Product]
