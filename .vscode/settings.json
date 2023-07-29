@@ -1,3 +1,4 @@
 {
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "haskell.plugin.importLens.codeLensOn": false
 }
