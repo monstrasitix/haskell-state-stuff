@@ -1,9 +1,9 @@
-CREATE TABLE IF NOT EXISTS products (
+CREATE TABLE IF NOT EXISTS product (
     id INTEGER PRIMARY KEY
     , name VARCHAR(255) NOT NULL
 );
 
-INSERT INTO products (id, name) VALUES
+INSERT INTO product (id, name) VALUES
     (1, "Shirt 1"),
     (2, "Shirt 2"),
     (3, "Shirt 3"),

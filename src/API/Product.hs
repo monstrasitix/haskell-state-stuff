@@ -23,7 +23,7 @@ server = getEntities :<|> findEntity
     getEntities :: Maybe Int -> Maybe Int -> Handler [Product]
     getEntities limit offset = liftIO $ do
       conn <- open "./sqlite.db"
-      stmt <- prepare conn "SELECT * FROM user LIMIT ? OFFSET ?"
+      stmt <- prepare conn "SELECT * FROM product LIMIT ? OFFSET ?"
       bind stmt
         [ SQLInteger . fromIntegral $ fromMaybe 10 limit
         , SQLInteger . fromIntegral $ fromMaybe 0 offset
@@ -35,19 +35,5 @@ server = getEntities :<|> findEntity
       return
         [ Product (fromIntegral one) two]
 
-    -- getEntities limit offset = liftIO $ withConnection "./sqlite.db" ff
-    --   where
-    --     ff conn = query conn "SELECT * FROM products LIMIT ? OFFSET ?"
-    --         ( fromMaybe 10 limit
-    --         , fromMaybe 0 offset
-    --         )
-    
     findEntity :: Int -> Handler (Maybe Product)
     findEntity _ = return Nothing
-
-    -- findEntity :: Int -> Handler (Maybe Product)
-    -- findEntity id_ = liftIO $ withConnection "./sqlite.db" ff
-    --   where
-    --     ff conn = do
-    --       result <- query conn "SELECT * FROM products WHERE id = ?" [id_]
-    --       return $ listToMaybe result

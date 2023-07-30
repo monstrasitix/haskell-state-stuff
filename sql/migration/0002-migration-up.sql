@@ -1,4 +1,10 @@
-INSERT INTO users (id, firstName, lastName) VALUES
+CREATE TABLE IF NOT EXISTS user (
+    id INTEGER PRIMARY KEY
+    , firstName VARCHAR(255) NOT NULL
+    , lastName VARCHAR(255) NOT NULL
+);
+
+INSERT INTO user (id, firstName, lastName) VALUES
     (1, "John", "Doe"),
     (2, "Sally", "Murphy"),
     (3, "Bob", "Dylan"),
