@@ -1,5 +1,4 @@
 {-# LANGUAGE DeriveGeneric      #-}
-{-# LANGUAGE InstanceSigs       #-}
 {-# LANGUAGE OverloadedStrings  #-}
 
 module Model.Product
@@ -22,7 +21,6 @@ instance FromJSON Product where
       <*> v .: "name"
 
 instance ToJSON Product where
-  toEncoding :: Product -> Encoding
   toEncoding x = pairs
     ( "id"    .= productId x
     <> "name" .= productName x
