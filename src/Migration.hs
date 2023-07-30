@@ -2,22 +2,22 @@ module Migration
   ( run
   ) where
 
-import Database.SQLite.Simple
+import Database.SQLite3
 
 import qualified Database.Migration.Product as Product
-import qualified Database.Migration.User    as User
+-- import qualified Database.Migration.User    as User
 
-up :: Connection -> IO ()
+up :: Database -> IO ()
 up conn = do
   Product.up conn
-  User.up conn
+  -- User.up conn
 
-down :: Connection -> IO ()
+down :: Database -> IO ()
 down conn = do
   Product.down conn
-  User.down conn
+  -- User.down conn
 
-run :: Connection -> IO ()
+run :: Database -> IO ()
 run conn =
   down conn
   >> up conn

@@ -8,7 +8,7 @@ module Lib
 
 import qualified API
 import           Data.Function
-import           Database.SQLite.Simple
+import           Database
 import           Migration
 import           Network.Wai.Handler.Warp
 import           Servant

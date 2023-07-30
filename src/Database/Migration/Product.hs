@@ -1,32 +1,15 @@
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE QuasiQuotes       #-}
 
 module Database.Migration.Product
   ( up
   , down
   ) where
 
-import           Database.SQLite.Simple
-import           Database.SQLite.Simple.QQ
+import           Database
+import           Database.SQLite3
 
-down :: Connection -> IO ()
-down conn = execute_ conn "DROP TABLE IF EXISTS products"
+down :: Database -> IO ()
+down conn = execQuery conn "./sql/migration/0001-migration-down.sql"
 
-up :: Connection -> IO ()
-up conn = do
-  execute_ conn [sql|
-    CREATE TABLE IF NOT EXISTS products (
-      id INTEGER PRIMARY KEY
-      , name VARCHAR(255) NOT NULL
-    )
-  |]
-  execute_ conn [sql|
-    INSERT INTO products (id, name) VALUES
-      (1, "Shirt 1")
-      , (2, "Shirt 2")
-      , (3, "Shirt 3")
-      , (4, "Shirt 4")
-      , (5, "Shirt 5")
-      , (6, "Shirt 6")
-      , (7, "Shirt 7")
-    |]
+up :: Database -> IO ()
+up conn = execQuery conn "./sql/migration/0001-migration-up.sql"

@@ -28,6 +28,7 @@ library
       API
       API.Product
       API.User
+      Database
       Database.Migration.Product
       Database.Migration.User
       Lib
@@ -42,6 +43,7 @@ library
   build-depends:
       aeson
     , base >=4.7 && <5
+    , direct-sqlite
     , servant-server
     , sqlite-simple
     , text
@@ -59,6 +61,7 @@ executable haskell-state-stuff-exe
   build-depends:
       aeson
     , base
+    , direct-sqlite
     , haskell-state-stuff
     , servant-server
     , sqlite-simple
@@ -78,6 +81,7 @@ test-suite haskell-state-stuff-test
   build-depends:
       aeson
     , base
+    , direct-sqlite
     , haskell-state-stuff
     , hspec
     , hspec-wai

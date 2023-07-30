@@ -8,8 +8,6 @@ module Model.Product
 
 import           Data.Aeson
 import qualified Data.Text                      as T
-import           Database.SQLite.Simple.FromRow
-import           Database.SQLite.Simple.ToRow
 import           GHC.Generics
 
 data Product = Product
@@ -28,16 +26,4 @@ instance ToJSON Product where
   toEncoding x = pairs
     ( "id"    .= productId x
     <> "name" .= productName x
-    )
-
-instance FromRow Product where
-  fromRow :: RowParser Product
-  fromRow = Product
-    <$> field
-    <*> field
-
-instance ToRow Product where
-  toRow x = toRow
-    ( productId x
-    , productName x
     )

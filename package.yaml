@@ -27,6 +27,7 @@ dependencies:
 - warp
 - text
 - sqlite-simple
+- direct-sqlite
 
 ghc-options:
 - -Wall

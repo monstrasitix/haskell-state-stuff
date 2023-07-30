@@ -8,8 +8,6 @@ module Model.User
 
 import           Data.Aeson
 import qualified Data.Text                      as T
-import           Database.SQLite.Simple.FromRow
-import           Database.SQLite.Simple.ToRow
 import           GHC.Generics
 
 data User = User
@@ -30,17 +28,3 @@ instance FromJSON User where
       <$> v .: "id"
       <*> v .: "firstName"
       <*> v .: "lastName"
-
-instance FromRow User where
-  fromRow :: RowParser User
-  fromRow = User
-    <$> field
-    <*> field
-    <*> field
-
-instance ToRow User where
-  toRow x = toRow
-    ( userId x
-    , userFirstName x
-    , userLastName x
-    )
