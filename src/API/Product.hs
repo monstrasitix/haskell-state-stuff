@@ -9,9 +9,9 @@ module API.Product (
 
 import           Control.Monad.IO.Class
 import           Model.Product
-import           Database.SQLite3
+import           Database.SQLite.Simple
 import           Servant
-import           Data.Maybe (fromMaybe)
+import           Data.Maybe (fromMaybe, listToMaybe)
 
 type API
   = QueryParam "limit" Int :> QueryParam "offset" Int :> Get '[JSON] [Product]
@@ -21,19 +21,18 @@ server :: Server API
 server = getEntities :<|> findEntity
   where
     getEntities :: Maybe Int -> Maybe Int -> Handler [Product]
-    getEntities limit offset = liftIO $ do
-      conn <- open "./sqlite.db"
-      stmt <- prepare conn "SELECT * FROM product LIMIT ? OFFSET ?"
-      bind stmt
-        [ SQLInteger . fromIntegral $ fromMaybe 10 limit
-        , SQLInteger . fromIntegral $ fromMaybe 0 offset
-        ]
-      [SQLInteger one, SQLText two] <- typedColumns stmt
-        [Just IntegerColumn, Just TextColumn]
-      finalize stmt
-      close conn
-      return
-        [ Product (fromIntegral one) two]
+    getEntities limit offset = liftIO $ withConnection "./sqlite.db" ff
+      where
+        ff conn = do
+          query conn "SELECT * FROM product LIMIT ? OFFSET ?"
+            ( fromMaybe 10 limit
+            , fromMaybe 0 offset
+            )
 
     findEntity :: Int -> Handler (Maybe Product)
-    findEntity _ = return Nothing
+    findEntity id_ = liftIO $ withConnection "./sqlite.db" ff
+      where
+        ff conn = do
+          rows <- query conn "SELECT * FROM product WHERE id = ?" [id_]
+          return $ listToMaybe rows
+

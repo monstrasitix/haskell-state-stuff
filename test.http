@@ -6,7 +6,7 @@ Accept: application/json
 
 ###
 
-GET {{domain}}/users/20 HTTP/1.1
+GET {{domain}}/users/1 HTTP/1.1
 Accept: application/json
 
 ###

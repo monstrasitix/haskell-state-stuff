@@ -8,56 +8,31 @@ module API.User (
   ) where
 
 import           Control.Monad.IO.Class
-import           Database.SQLite3
 import           Model.User
+import           Database.SQLite.Simple
 import           Servant
-import           Data.Maybe (fromMaybe)
-import Data.Foldable (foldrM)
+import           Data.Maybe (fromMaybe, listToMaybe)
 
 type API
   = QueryParam "limit" Int :> QueryParam "offset" Int :> Get '[JSON] [User]
   :<|> Capture "id" Int :> Get '[JSON] (Maybe User)
 
-
-getUser :: Statement -> IO User
-getUser stmt = do
-  [SQLInteger one, SQLText two, SQLText three] <- typedColumns stmt
-    [Just IntegerColumn, Just TextColumn, Just TextColumn]
-  return $ User (fromIntegral one) two three
-
-getUsers :: Statement -> IO [User]
-getUsers stmt = aggregate [] (step stmt)
-  where
-    aggregate :: [User] -> StepResult -> IO [User]
-    aggregate xs Row = do
-      user <- getUser stmt
-      return $ user : (aggregare )
-    aggregate xs Done = return xs
-
-
-  -- result <- step stmt
-  -- case result of
-  --   Row -> do
-  --     user <- getUser stmt
-  --     return [user]
-  --   Done -> return [User 0 "" ""]
-
 server :: Server API
 server = getEntities :<|> findEntity
   where
     getEntities :: Maybe Int -> Maybe Int -> Handler [User]
-    getEntities limit offset = liftIO $ do
-      conn <- open "./sqlite.db"
-      stmt <- prepare conn "SELECT * FROM user LIMIT ? OFFSET ?"
-      bind stmt
-        [ SQLInteger . fromIntegral $ fromMaybe 10 limit
-        , SQLInteger . fromIntegral $ fromMaybe 0 offset
-        ]
-      
-      users <- getUsers stmt
-      finalize stmt
-      close conn
-      return users
+    getEntities limit offset = liftIO $ withConnection "./sqlite.db" ff
+      where
+        ff conn = do
+          query conn "SELECT * FROM user LIMIT ? OFFSET ?"
+            ( fromMaybe 10 limit
+            , fromMaybe 0 offset
+            )
 
     findEntity :: Int -> Handler (Maybe User)
-    findEntity _ = return Nothing
+    findEntity id_ = liftIO $ withConnection "./sqlite.db" ff
+      where
+        ff conn = do
+          rows <- query conn "SELECT * FROM user WHERE id = ?" [id_]
+          return $ listToMaybe rows
+
