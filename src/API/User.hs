@@ -11,6 +11,7 @@ import           Control.Monad.IO.Class
 import           Model.User
 import           Database.SQLite.Simple
 import           Servant
+import           Database
 import           Data.Maybe (fromMaybe, listToMaybe)
 
 type API
@@ -21,7 +22,7 @@ server :: Server API
 server = getEntities :<|> findEntity
   where
     getEntities :: Maybe Int -> Maybe Int -> Handler [User]
-    getEntities limit offset = liftIO $ withConnection "./sqlite.db" ff
+    getEntities limit offset = liftIO $ withDatabase ff
       where
         ff conn = do
           query conn "SELECT * FROM user LIMIT ? OFFSET ?"
@@ -30,7 +31,7 @@ server = getEntities :<|> findEntity
             )
 
     findEntity :: Int -> Handler (Maybe User)
-    findEntity id_ = liftIO $ withConnection "./sqlite.db" ff
+    findEntity id_ = liftIO $ withDatabase ff
       where
         ff conn = do
           rows <- query conn "SELECT * FROM user WHERE id = ?" [id_]

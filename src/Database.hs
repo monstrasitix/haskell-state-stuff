@@ -1,21 +1,26 @@
 module Database
-    ( readQuery
-    , execQuery
+    ( readQueryDirect
+    , execQueryDirect
+    , withConnectionDirect
     , withConnection
     ) where
 
-import qualified Data.Text          as T
 import           Data.Functor
-import           Database.SQLite3
+import qualified Data.Text              as T
+import qualified Database.SQLite3       as D
+import qualified Database.SQLite.Simple as S
 
-readQuery :: FilePath -> IO T.Text
-readQuery path = readFile path <&> T.pack
+readQueryDirect :: FilePath -> IO T.Text
+readQueryDirect path = readFile path <&> T.pack
 
-execQuery :: Database -> FilePath -> IO ()
-execQuery conn path = readQuery path >>= exec conn
+execQueryDirect :: D.Database -> FilePath -> IO ()
+execQueryDirect conn path = readQueryDirect path >>= D.exec conn
 
-withConnection :: T.Text -> (Database -> IO ()) -> IO ()
-withConnection db ff = do
-    conn <- open db
+withConnectionDirect :: T.Text -> (D.Database -> IO ()) -> IO ()
+withConnectionDirect db ff = do
+    conn <- D.open db
     ff conn
-    close conn
+    D.close conn
+
+withConnection :: String -> (S.Connection -> IO a) -> IO a
+withConnection = S.withConnection

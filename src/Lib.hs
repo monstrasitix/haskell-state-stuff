@@ -24,5 +24,5 @@ app = serve (Proxy @API.API) API.server
 
 startApp :: IO ()
 startApp = do
-  withConnection "./sqlite.db" Migration.run
+  withConnectionDirect "./sqlite.db" Migration.run
   runSettings settings app
