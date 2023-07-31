@@ -1,6 +1,5 @@
-{-# LANGUAGE DataKinds         #-}
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE TypeOperators     #-}
+{-# LANGUAGE DataKinds     #-}
+{-# LANGUAGE TypeOperators #-}
 
 module API.User (
   API
@@ -9,31 +8,25 @@ module API.User (
 
 import           Control.Monad.IO.Class
 import           Model.User
-import           Database.SQLite.Simple
 import           Servant
 import           Database
-import           Data.Maybe (fromMaybe, listToMaybe)
+import qualified Data.Maybe             as M
 
-type API
-  = QueryParam "limit" Int :> QueryParam "offset" Int :> Get '[JSON] [User]
-  :<|> Capture "id" Int :> Get '[JSON] (Maybe User)
+type API =
+  (
+    QueryParam "limit" Int :> QueryParam "offset" Int :> Get '[JSON] [User]
+    :<|> Capture "id" Int :> Get '[JSON] (Maybe User)
+  )
 
 server :: Server API
 server = getEntities :<|> findEntity
   where
     getEntities :: Maybe Int -> Maybe Int -> Handler [User]
-    getEntities limit offset = liftIO $ withDatabase ff
-      where
-        ff conn = do
-          query conn "SELECT * FROM user LIMIT ? OFFSET ?"
-            ( fromMaybe 10 limit
-            , fromMaybe 0 offset
-            )
+    getEntities limit offset = liftIO . withDatabase
+      $ \conn -> dbGetUsers conn 
+        (M.fromMaybe 10 limit)
+        (M.fromMaybe 0 offset)
 
     findEntity :: Int -> Handler (Maybe User)
-    findEntity id_ = liftIO $ withDatabase ff
-      where
-        ff conn = do
-          rows <- query conn "SELECT * FROM user WHERE id = ?" [id_]
-          return $ listToMaybe rows
-
+    findEntity id_ = liftIO . withDatabase
+      $ \conn -> dbFindUser conn id_

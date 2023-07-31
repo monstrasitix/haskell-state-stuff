@@ -3,6 +3,7 @@ module Database
     , execQueryDirect
     , withConnectionDirect
     , withConnection
+    , withDatabase
     ) where
 
 import           Data.Functor
@@ -24,3 +25,6 @@ withConnectionDirect db ff = do
 
 withConnection :: String -> (S.Connection -> IO a) -> IO a
 withConnection = S.withConnection
+
+withDatabase :: (S.Connection -> IO a) -> IO a
+withDatabase = withConnection "./sqlite.db"

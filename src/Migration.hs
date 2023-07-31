@@ -18,6 +18,5 @@ down conn = do
   User.down conn
 
 run :: Database -> IO ()
-run conn =
-  down conn
+run conn = down conn
   >> up conn

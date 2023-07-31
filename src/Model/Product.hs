@@ -3,11 +3,14 @@
 
 module Model.Product
   ( Product(..)
+  , dbGetProducts
+  , dbFindProduct
   ) where
 
 import           Data.Aeson
-import qualified Data.Text    as T
 import           Database.SQLite.Simple
+import qualified Data.Text              as T
+import qualified Data.Maybe             as M
 
 data Product = Product
   { productId   :: Int
@@ -42,3 +45,12 @@ instance ToRow Product where
 
 instance FromRow Product where
   fromRow = Product <$> field <*> field
+
+dbGetProducts :: Connection -> Int -> Int -> IO [Product]
+dbGetProducts conn limit offset = query conn
+  "SELECT * FROM product LIMIT ? OFFSET ?"
+  (limit, offset)
+
+dbFindProduct :: Connection -> Int -> IO (Maybe Product)
+dbFindProduct conn id_ = M.listToMaybe
+  <$> query conn "SELECT * FROM product WHERE id = ?" [id_]
