@@ -3,6 +3,8 @@
 module Database.SQL.Product
   ( dbGetProducts
   , dbFindProduct
+  , dbDeleteProduct
+  , dbAddProduct
   ) where
 
 import           Model.Product
@@ -17,3 +19,15 @@ dbGetProducts conn limit offset = query conn
 dbFindProduct :: Connection -> Int -> IO (Maybe Product)
 dbFindProduct conn id_ = M.listToMaybe
   <$> query conn "SELECT * FROM product WHERE id = ?" [id_]
+
+dbDeleteProduct :: Connection -> Int -> IO ()
+dbDeleteProduct conn id_ =
+  execute conn "DELETE FROM product WHERE id = ?" [id_]
+
+dbAddProduct :: Connection -> Product -> IO Product
+dbAddProduct conn x = do
+  execute conn "INSERT INTO product (id, name) VALUES (?, ?)"
+    ( productId x
+    , productName x
+    )
+  return x
