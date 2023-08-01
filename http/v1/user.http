@@ -1,10 +1,39 @@
 @domain=http://127.0.0.1:8080/api/v1
 
 
-GET {{domain}}/users?limit=10 HTTP/1.1
+GET {{domain}}/users HTTP/1.1
 Accept: application/json
 
 ###
 
-GET {{domain}}/users/1 HTTP/1.1
+POST {{domain}}/users HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+
+{
+    "id": 10,
+    "firstName": "Sally",
+    "lastName": "Murphy"
+}
+
+###
+
+GET {{domain}}/users/10 HTTP/1.1
+Accept: application/json
+
+###
+
+PUT {{domain}}/users/10 HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+
+{
+    "id": 10,
+    "firstName": "First name changed!!!!!!!!!!!!!!!!!!",
+    "lastName": "First name changed!!!!!!!!!!!!!!!!!!"
+}
+
+###
+
+DELETE {{domain}}/users/10 HTTP/1.1
 Accept: application/json

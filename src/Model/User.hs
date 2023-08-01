@@ -6,7 +6,8 @@ module Model.User
   ) where
 
 import           Data.Aeson
-import           Database.SQLite.Simple
+import Database.SQLite.Simple
+    ( FromRow(..), ToRow(..), SQLData, field )
 import qualified Data.Text              as T
 
 data User = User
