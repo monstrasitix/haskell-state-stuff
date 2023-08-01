@@ -29,8 +29,8 @@ library
       API.Product
       API.User
       Database
-      Database.Migration.Product
-      Database.Migration.User
+      Database.SQL.Product
+      Database.SQL.User
       Lib
       Migration
       Model.Product

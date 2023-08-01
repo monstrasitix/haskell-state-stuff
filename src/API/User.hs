@@ -1,8 +1,8 @@
 {-# LANGUAGE DataKinds     #-}
 {-# LANGUAGE TypeOperators #-}
 
-module API.User (
-  API
+module API.User
+  ( API
   , server
   ) where
 
@@ -10,6 +10,7 @@ import           Control.Monad.IO.Class
 import           Model.User
 import           Servant
 import           Database
+import           Database.SQL.User
 import qualified Data.Maybe             as M
 
 type API =
@@ -30,3 +31,4 @@ server = getEntities :<|> findEntity
     findEntity :: Int -> Handler (Maybe User)
     findEntity id_ = liftIO . withDatabase
       $ \conn -> dbFindUser conn id_
+
