@@ -2,14 +2,14 @@ module Migration
   ( run
   ) where
 
-import Database
-import Database.SQLite3
+import           Database
+import           Database.SQLite3
+import           System.Directory
 
+migrationPath :: FilePath
+migrationPath = "./sql/migration"
 
+-- TODO: Path ordering will be incorrect
 run :: Database -> IO ()
-run conn = do
-  execQueryDirect conn "./sql/migration/0001-migration-down.sql"
-  execQueryDirect conn "./sql/migration/0001-migration-up.sql"
-
-  execQueryDirect conn "./sql/migration/0002-migration-down.sql"
-  execQueryDirect conn "./sql/migration/0002-migration-up.sql"
+run conn = listDirectory migrationPath
+  >>= mapM_ (execQueryDirect conn)

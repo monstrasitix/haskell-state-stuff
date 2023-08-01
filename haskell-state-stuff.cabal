@@ -44,6 +44,7 @@ library
       aeson
     , base >=4.7 && <5
     , direct-sqlite
+    , directory
     , servant-server
     , sqlite-simple
     , text
@@ -62,6 +63,7 @@ executable haskell-state-stuff-exe
       aeson
     , base
     , direct-sqlite
+    , directory
     , haskell-state-stuff
     , servant-server
     , sqlite-simple
@@ -82,6 +84,7 @@ test-suite haskell-state-stuff-test
       aeson
     , base
     , direct-sqlite
+    , directory
     , haskell-state-stuff
     , hspec
     , hspec-wai

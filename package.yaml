@@ -28,6 +28,7 @@ dependencies:
 - text
 - sqlite-simple
 - direct-sqlite
+- directory
 
 ghc-options:
 - -Wall
