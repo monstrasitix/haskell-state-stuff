@@ -43,8 +43,10 @@ library
   build-depends:
       aeson
     , base >=4.7 && <5
+    , blaze-html
     , direct-sqlite
     , directory
+    , servant-blaze
     , servant-server
     , sqlite-simple
     , text
@@ -62,9 +64,11 @@ executable haskell-state-stuff-exe
   build-depends:
       aeson
     , base
+    , blaze-html
     , direct-sqlite
     , directory
     , haskell-state-stuff
+    , servant-blaze
     , servant-server
     , sqlite-simple
     , text
@@ -83,12 +87,14 @@ test-suite haskell-state-stuff-test
   build-depends:
       aeson
     , base
+    , blaze-html
     , direct-sqlite
     , directory
     , haskell-state-stuff
     , hspec
     , hspec-wai
     , hspec-wai-json
+    , servant-blaze
     , servant-server
     , sqlite-simple
     , text

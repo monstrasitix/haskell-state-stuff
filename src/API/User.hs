@@ -9,16 +9,18 @@ module API.User
 import           Control.Monad.IO.Class
 import           Model.User
 import           Servant
+import           Servant.HTML.Blaze
 import           Database
 import           Database.SQL.User
 import qualified Data.Maybe             as M
 
 type API =
   (
-    QueryParam "limit" Int :> QueryParam "offset" Int :> Get '[JSON] [User]
-    :<|> ReqBody '[JSON] User :> Post '[JSON] User
-    :<|> Capture "id" Int :> Get '[JSON] (Maybe User)
-    :<|> Capture "id" Int :> ReqBody '[JSON] User :> Put '[JSON] (Maybe User)
+    QueryParam "limit" Int :> QueryParam "offset" Int :> Get '[JSON, HTML] [User]
+    :<|> ReqBody '[JSON] User :> Post '[JSON, HTML] User
+    :<|> Capture "id" Int :> Get '[JSON, HTML] (Maybe User)
+    :<|> Capture "id" Int :> ReqBody '[JSON] User :> Put '[JSON, HTML] (Maybe User)
+    :<|> Capture "id" Int :> ReqBody '[JSON] User :> Patch '[JSON, HTML] (Maybe User)
     :<|> Capture "id" Int :> DeleteNoContent
   )
 
@@ -27,6 +29,7 @@ server = getEntities
   :<|> createEntity
   :<|> findEntity
   :<|> replaceEntity
+  :<|> updateEntity
   :<|> deleteEntity
   where
     getEntities :: Maybe Int -> Maybe Int -> Handler [User]
@@ -45,6 +48,10 @@ server = getEntities
 
     replaceEntity :: Int -> User -> Handler (Maybe User)
     replaceEntity id_ entity = liftIO . withDatabase
+      $ \conn -> dbReplaceUser conn id_ entity
+
+    updateEntity :: Int -> User -> Handler (Maybe User)
+    updateEntity id_ entity = liftIO . withDatabase
       $ \conn -> dbReplaceUser conn id_ entity
 
     deleteEntity :: Int -> Handler NoContent

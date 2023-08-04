@@ -22,13 +22,16 @@ description:         Please see the README on GitHub at <https://github.com/gith
 dependencies:
 - base >= 4.7 && < 5
 - aeson
-- servant-server
-- wai
-- warp
-- text
-- sqlite-simple
+- blaze-html
 - direct-sqlite
 - directory
+- servant-blaze
+- servant-blaze
+- servant-server
+- sqlite-simple
+- text
+- wai
+- warp
 
 ghc-options:
 - -Wall

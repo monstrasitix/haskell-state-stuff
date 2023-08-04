@@ -9,7 +9,9 @@ import           System.Directory
 migrationPath :: FilePath
 migrationPath = "./sql/migration"
 
--- TODO: Path ordering will be incorrect
+updatePath :: FilePath -> FilePath
+updatePath path = migrationPath ++ "/" ++ path
+
 run :: Database -> IO ()
 run conn = listDirectory migrationPath
-  >>= mapM_ (execQueryDirect conn)
+  >>= mapM_ (execQueryDirect conn . updatePath) . reverse

@@ -6,6 +6,11 @@ Accept: application/json
 
 ###
 
+GET {{domain}}/users HTTP/1.1
+Accept: text/html
+
+###
+
 POST {{domain}}/users HTTP/1.1
 Accept: application/json
 Content-Type: application/json
@@ -20,6 +25,11 @@ Content-Type: application/json
 
 GET {{domain}}/users/10 HTTP/1.1
 Accept: application/json
+
+###
+
+GET {{domain}}/users/10 HTTP/1.1
+Accept: text/html
 
 ###
 
