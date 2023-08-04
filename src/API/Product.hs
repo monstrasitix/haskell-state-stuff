@@ -8,18 +8,18 @@ module API.Product
 
 import           Control.Monad.IO.Class
 import           Model.Product
+import           Html
 import           Servant
-import           Servant.HTML.Blaze
 import           Database
 import           Database.SQL.Product
 import qualified Data.Maybe             as M
 
 type API =
   (
-    QueryParam "limit" Int :> QueryParam "offset" Int :> Get '[JSON, HTML] [Product]
-    :<|> ReqBody '[JSON] Product :> Post '[JSON, HTML] Product
-    :<|> Capture "id" Int :> Get '[JSON, HTML] (Maybe Product)
-    :<|> Capture "id" Int :> ReqBody '[JSON] Product :> Put '[JSON, HTML] (Maybe Product)
+    QueryParam "limit" Int :> QueryParam "offset" Int :> Get '[JSON, PrettyHTML] [Product]
+    :<|> ReqBody '[JSON] Product :> Post '[JSON, PrettyHTML] Product
+    :<|> Capture "id" Int :> Get '[JSON, PrettyHTML] (Maybe Product)
+    :<|> Capture "id" Int :> ReqBody '[JSON] Product :> Put '[JSON, PrettyHTML] (Maybe Product)
     :<|> Capture "id" Int :> DeleteNoContent
   )
 

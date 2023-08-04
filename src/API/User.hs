@@ -7,20 +7,20 @@ module API.User
   ) where
 
 import           Control.Monad.IO.Class
+import           Html (PrettyHTML)
 import           Model.User
 import           Servant
-import           Servant.HTML.Blaze
 import           Database
 import           Database.SQL.User
 import qualified Data.Maybe             as M
 
 type API =
   (
-    QueryParam "limit" Int :> QueryParam "offset" Int :> Get '[JSON, HTML] [User]
-    :<|> ReqBody '[JSON] User :> Post '[JSON, HTML] User
-    :<|> Capture "id" Int :> Get '[JSON, HTML] (Maybe User)
-    :<|> Capture "id" Int :> ReqBody '[JSON] User :> Put '[JSON, HTML] (Maybe User)
-    :<|> Capture "id" Int :> ReqBody '[JSON] User :> Patch '[JSON, HTML] (Maybe User)
+    QueryParam "limit" Int :> QueryParam "offset" Int :> Get '[JSON, PrettyHTML] [User]
+    :<|> ReqBody '[JSON] User :> Post '[JSON, PrettyHTML] User
+    :<|> Capture "id" Int :> Get '[JSON, PrettyHTML] (Maybe User)
+    :<|> Capture "id" Int :> ReqBody '[JSON] User :> Put '[JSON, PrettyHTML] (Maybe User)
+    :<|> Capture "id" Int :> ReqBody '[JSON] User :> Patch '[JSON, PrettyHTML] (Maybe User)
     :<|> Capture "id" Int :> DeleteNoContent
   )
 

@@ -23,8 +23,11 @@ dependencies:
 - base >= 4.7 && < 5
 - aeson
 - blaze-html
+- bytestring
 - direct-sqlite
 - directory
+- http-media
+- utf8-string
 - servant-blaze
 - servant-blaze
 - servant-server
