@@ -1,8 +1,9 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module Database
     ( readQueryDirect
     , execQueryDirect
-    , withConnectionDirect
-    , withConnection
+    , withDatabaseDirect
     , withDatabase
     ) where
 
@@ -17,14 +18,11 @@ readQueryDirect path = readFile path <&> T.pack
 execQueryDirect :: D.Database -> FilePath -> IO ()
 execQueryDirect conn path = readQueryDirect path >>= D.exec conn
 
-withConnectionDirect :: T.Text -> (D.Database -> IO ()) -> IO ()
-withConnectionDirect db ff = do
-    conn <- D.open db
+withDatabaseDirect :: (D.Database -> IO ()) -> IO ()
+withDatabaseDirect ff = do
+    conn <- D.open "./sqlite.db"
     ff conn
     D.close conn
 
-withConnection :: String -> (S.Connection -> IO a) -> IO a
-withConnection = S.withConnection
-
 withDatabase :: (S.Connection -> IO a) -> IO a
-withDatabase = withConnection "./sqlite.db"
+withDatabase = S.withConnection "./sqlite.db"
