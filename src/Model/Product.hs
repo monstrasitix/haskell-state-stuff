@@ -6,7 +6,6 @@ module Model.Product
   ( Product(..)
   ) where
 
-
 import           Data.Aeson
 import           Database.SQLite.Simple
 import           Text.Blaze.Html
